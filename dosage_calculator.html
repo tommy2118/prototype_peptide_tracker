@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draw & Dose Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Button styling for selected state */
+    .selected {
+      background-color: #2563eb;
+      color: #ffffff;
+      border: 2px solid #1e40af;
+    }
+
+    /* Syringe styles */
+    .syringe-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin-top: 20px;
+    }
+
+    .syringe {
+      position: relative;
+      width: 300px;
+      height: 80px;
+      background: #ddd;
+      border-radius: 5px;
+      border: 2px solid #ccc;
+      overflow: hidden;
+    }
+
+    .syringe::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: var(--fill-percent, 0%);
+      height: 100%;
+      background: #2563eb;
+      transition: width 0.3s ease-in-out;
+    }
+
+    .marker {
+      position: absolute;
+      top: 0;
+      left: calc(var(--fill-percent, 0%) - 1%);
+      width: 2px;
+      height: 100%;
+      background: red;
+      transition: left 0.3s ease-in-out;
+    }
+
+    .graduated-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .graduated-lines div {
+      position: absolute;
+      bottom: 0;
+      width: 1px;
+      height: 30px;
+      background: #333;
+      transform: translateY(0%);
+    }
+
+    /* Graduated labels */
+    .graduated-labels {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      width: 100%;
+      font-size: 12px;
+      color: #333;
+    }
+
+    .info-text {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-6 space-y-6">
+    <!-- Header -->
+    <header class="text-center">
+      <h1 class="text-2xl font-bold text-blue-600">Draw & Dose Calculator</h1>
+      <p class="text-sm text-gray-500">Calculate your syringe draw and peptide doses.</p>
+    </header>
+
+    <!-- Input Fields Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Dose of Peptide -->
+      <div class="bg-gray-50 p-4 rounded-lg shadow-sm text-center">
+        <h3 class="font-semibold text-lg text-gray-700">Dose of Peptide</h3>
+        <div class="mt-3 flex flex-wrap gap-2 justify-center">
+          <button class="dose-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-dose="0.1">0.1mg</button>
+          <button class="dose-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-dose="0.5">0.5mg</button>
+          <button class="dose-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-dose="1">1mg</button>
+          <button class="dose-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-dose="5">5mg</button>
+          <button class="dose-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-dose="10">10mg</button>
+          <button class="dose-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md other-dose">Other</button>
+          <input type="number" id="other-dose" placeholder="Enter dose (mg)" class="hidden mt-3 p-2 border border-gray-300 rounded-md text-center w-full">
+        </div>
+      </div>
+
+      <!-- Peptide Strength -->
+      <div class="bg-gray-50 p-4 rounded-lg shadow-sm text-center">
+        <h3 class="font-semibold text-lg text-gray-700">Peptide Strength</h3>
+        <div class="mt-3 flex flex-wrap gap-2 justify-center">
+          <button class="strength-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-strength="5">5mg</button>
+          <button class="strength-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-strength="10">10mg</button>
+          <button class="strength-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-strength="20">20mg</button>
+          <button class="strength-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-strength="50">50mg</button>
+          <button class="strength-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md other-strength">Other</button>
+          <input type="number" id="other-strength" placeholder="Enter strength (mg)" class="hidden mt-3 p-2 border border-gray-300 rounded-md text-center w-full">
+        </div>
+      </div>
+
+      <!-- Bacteriostatic Water -->
+      <div class="bg-gray-50 p-4 rounded-lg shadow-sm text-center">
+        <h3 class="font-semibold text-lg text-gray-700">Bacteriostatic Water</h3>
+        <div class="mt-3 flex flex-wrap gap-2 justify-center">
+          <button class="water-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-water="1">1.0mL</button>
+          <button class="water-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-water="2">2.0mL</button>
+          <button class="water-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-water="3">3.0mL</button>
+          <button class="water-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md" data-water="5">5.0mL</button>
+          <button class="water-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-md other-water">Other</button>
+          <input type="number" id="other-water" placeholder="Enter water (mL)" class="hidden mt-3 p-2 border border-gray-300 rounded-md text-center w-full">
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="font-semibold text-lg text-gray-700">Results</h3>
+      <p class="mt-3 text-sm text-gray-600"><strong>Peptide Concentration:</strong> <span id="concentration">--</span> mg/mL</p>
+      <p class="mt-1 text-sm text-gray-600"><strong>Draw Syringe to:</strong> <span id="draw-syringe">--</span> units</p>
+      <p class="mt-1 text-sm text-gray-600"><strong>Total Doses per Vial:</strong> <span id="total-doses">--</span></p>
+    </div>
+
+    <!-- Syringe Graphic -->
+    <div class="syringe-container">
+      <div class="syringe">
+        <div class="graduated-lines">
+          <div style="left: 0%;"></div>
+          <div style="left: 20%;"></div>
+          <div style="left: 40%;"></div>
+          <div style="left: 60%;"></div>
+          <div style="left: 80%;"></div>
+          <div style="left: 100%;"></div>
+        </div>
+        <div class="marker"></div>
+        <div class="graduated-labels">
+          <span>0</span>
+          <span>10</span>
+          <span>20</span>
+          <span>30</span>
+          <span>40</span>
+          <span>50</span>
+        </div>
+      </div>
+      <p class="info-text">Draw to the red marker to match your calculated dosage.</p>
+    </div>
+  </div>
+
+  <script>
+    let selectedDose = 0.1, selectedStrength = 5, selectedWater = 1;
+
+    // Handle Other Input Visibility
+    function handleOtherInput(buttonClass, inputId) {
+      document.querySelectorAll(buttonClass).forEach(btn => {
+        btn.addEventListener("click", () => {
+          const inputField = document.getElementById(inputId);
+          if (btn.classList.contains("other-dose") || btn.classList.contains("other-strength") || btn.classList.contains("other-water")) {
+            inputField.classList.toggle("hidden");
+            btn.classList.add("selected");
+          } else {
+            inputField.classList.add("hidden");
+          }
+        });
+      });
+    }
+
+    // Call Other Input Handlers
+    handleOtherInput(".dose-btn", "other-dose");
+    handleOtherInput(".strength-btn", "other-strength");
+    handleOtherInput(".water-btn", "other-water");
+
+    // Helper to update button selection
+    function updateButtonSelection(buttons, value) {
+      buttons.forEach(btn => {
+        btn.classList.remove("selected");
+        if (btn.dataset.dose == value || btn.dataset.strength == value || btn.dataset.water == value) {
+          btn.classList.add("selected");
+        }
+      });
+    }
+
+    // Update results and syringe graphic
+    function updateResults() {
+      const concentration = (selectedStrength / selectedWater).toFixed(2); // mg/mL
+      const syringeUnits = Math.min((selectedDose / concentration).toFixed(0), 50); // Rounded and capped at 50 units
+      const totalDoses = Math.floor(selectedStrength / selectedDose); // Total doses
+
+      // Update display
+      document.getElementById("concentration").textContent = `${concentration} mg/mL`;
+      document.getElementById("draw-syringe").textContent = `${syringeUnits} units`;
+      document.getElementById("total-doses").textContent = `${totalDoses} doses`;
+
+      // Update syringe fill and marker
+      document.documentElement.style.setProperty("--fill-percent", `${(syringeUnits / 50) * 100}%`);
+    }
+
+    // Button click events
+    document.querySelectorAll(".dose-btn").forEach(btn => btn.addEventListener("click", () => {
+      selectedDose = parseFloat(btn.dataset.dose) || parseFloat(document.getElementById("other-dose").value);
+      updateButtonSelection(document.querySelectorAll(".dose-btn"), selectedDose);
+      updateResults();
+    }));
+
+    document.querySelectorAll(".strength-btn").forEach(btn => btn.addEventListener("click", () => {
+      selectedStrength = parseFloat(btn.dataset.strength) || parseFloat(document.getElementById("other-strength").value);
+      updateButtonSelection(document.querySelectorAll(".strength-btn"), selectedStrength);
+      updateResults();
+    }));
+
+    document.querySelectorAll(".water-btn").forEach(btn => btn.addEventListener("click", () => {
+      selectedWater = parseFloat(btn.dataset.water) || parseFloat(document.getElementById("other-water").value);
+      updateButtonSelection(document.querySelectorAll(".water-btn"), selectedWater);
+      updateResults();
+    }));
+
+    // Initialize results
+    updateResults();
+  </script>
+</body>
+</html>
+
