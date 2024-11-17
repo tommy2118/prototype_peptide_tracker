@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peptide Info</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 space-y-6">
+    <!-- Header -->
+    <header class="text-center">
+      <h1 class="text-2xl font-bold text-blue-600">Peptide Info</h1>
+      <p class="text-sm text-gray-500">Track. Analyze. Optimize.</p>
+    </header>
+
+    <!-- Peptide Overview -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h2 class="text-xl font-bold text-gray-700">BPC-157</h2>
+      <p class="text-sm text-gray-600 mt-2">
+        BPC-157 is a synthetic peptide known for its healing properties, particularly in recovery from muscle injuries and inflammation reduction.
+      </p>
+    </div>
+
+    <!-- Dosage Information -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <div class="flex items-center mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h3m3 0h2m-2 0v3m0-3v-3m0 3H9m0 3H7m6-3v3m0-3V9m0 3h-3m3-6h3m-3 0h-3m3 0H9m6 3V6m-6 6h3" />
+        </svg>
+        <h3 class="font-semibold text-lg">Common Dosage</h3>
+      </div>
+      <p class="text-sm text-gray-600">250-500 mcg per day</p>
+    </div>
+
+    <!-- AI-Driven Trends -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="font-semibold text-lg text-gray-700">Trending Insights</h3>
+      <ul class="list-disc pl-5 mt-2 text-sm text-gray-600">
+        <li>Reduced inflammation reported after 3 weeks.</li>
+        <li>Commonly paired with TB-500 for recovery.</li>
+        <li>Optimal dosage for injuries: 350 mcg daily.</li>
+      </ul>
+    </div>
+
+    <!-- User Experiences -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="font-semibold text-lg text-gray-700">User Experiences</h3>
+      <ul class="mt-2 text-sm text-gray-600 space-y-1">
+        <li>Jan 15: "Helped with joint pain after 2 weeks."</li>
+        <li>Jan 10: "Noticed reduced inflammation quickly."</li>
+        <li>Jan 5: "Mild headache at higher doses."</li>
+      </ul>
+      <button onclick="goToPage('dosage.html')" class="w-full bg-blue-600 text-white py-2 mt-4 rounded-md hover:bg-blue-700">
+        Calculate Dosage
+      </button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

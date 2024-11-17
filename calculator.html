@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dosage Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 flex items-center justify-center min-h-screen">
+
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-lg overflow-hidden">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white text-center py-4">
+      <h1 class="text-xl font-bold">Dosage Calculator</h1>
+    </header>
+
+    <!-- Content -->
+    <section class="p-6 space-y-6">
+      <!-- Introduction -->
+      <div class="text-gray-600 text-sm">
+        <p>Use this calculator to determine the appropriate peptide dosage based on your weight and desired protocol.</p>
+      </div>
+
+      <!-- Input Fields -->
+      <div class="space-y-4">
+        <!-- Weight Input -->
+        <div>
+          <label for="weight" class="block text-sm font-medium text-gray-700">Your Weight (kg)</label>
+          <input id="weight" type="number" placeholder="e.g., 70" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+        </div>
+
+        <!-- Peptide Selection -->
+        <div>
+          <label for="peptide" class="block text-sm font-medium text-gray-700">Select Peptide</label>
+          <select id="peptide" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            <option disabled selected>Select a peptide</option>
+            <option value="bpc157">BPC-157</option>
+            <option value="tb500">TB-500</option>
+            <option value="igf1">IGF-1</option>
+          </select>
+        </div>
+
+        <!-- Protocol Selection -->
+        <div>
+          <label for="protocol" class="block text-sm font-medium text-gray-700">Dosage Protocol</label>
+          <select id="protocol" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            <option disabled selected>Select a protocol</option>
+            <option value="standard">Standard</option>
+            <option value="advanced">Advanced</option>
+            <option value="therapeutic">Therapeutic</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Dosage Output -->
+      <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+        <h3 class="text-lg font-bold text-gray-700">Recommended Dosage</h3>
+        <p id="dosage-output" class="text-blue-600 text-2xl font-bold mt-2">-- mcg</p>
+        <p class="text-xs text-gray-500">Based on selected weight and protocol.</p>
+      </div>
+
+      <!-- Calculate Button -->
+      <button id="calculate-btn" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
+        Calculate Dosage
+      </button>
+    </section>
+  </div>
+
+  <script>
+    // Simple static calculation logic for mockup purposes
+    document.getElementById('calculate-btn').addEventListener('click', () => {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const peptide = document.getElementById('peptide').value;
+      const protocol = document.getElementById('protocol').value;
+
+      let dosage = '--';
+
+      if (weight && peptide && protocol) {
+        switch (protocol) {
+          case 'standard':
+            dosage = (weight * 3).toFixed(2) + ' mcg'; // Example formula
+            break;
+          case 'advanced':
+            dosage = (weight * 5).toFixed(2) + ' mcg';
+            break;
+          case 'therapeutic':
+            dosage = (weight * 8).toFixed(2) + ' mcg';
+            break;
+        }
+      }
+
+      document.getElementById('dosage-output').textContent = dosage;
+    });
+  </script>
+</body>
+</html>
+

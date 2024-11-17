@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dosage Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 space-y-6">
+    <!-- Header -->
+    <header class="text-center">
+      <h1 class="text-2xl font-bold text-blue-600">Dosage Calculator</h1>
+      <p class="text-sm text-gray-500">Enter your details to calculate the appropriate dosage.</p>
+    </header>
+
+    <!-- Input Fields -->
+    <div class="space-y-4">
+      <div>
+        <label for="weight" class="block text-sm font-medium text-gray-700">Your Weight (kg)</label>
+        <input id="weight" type="number" placeholder="e.g., 70" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+      </div>
+
+      <div>
+        <label for="peptide" class="block text-sm font-medium text-gray-700">Select Peptide</label>
+        <select id="peptide" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+          <option disabled selected>Select a peptide</option>
+          <option value="bpc157">BPC-157</option>
+          <option value="tb500">TB-500</option>
+          <option value="igf1">IGF-1</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="protocol" class="block text-sm font-medium text-gray-700">Dosage Protocol</label>
+        <select id="protocol" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+          <option disabled selected>Select a protocol</option>
+          <option value="standard">Standard</option>
+          <option value="advanced">Advanced</option>
+          <option value="therapeutic">Therapeutic</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Dosage Output -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="text-lg font-bold text-gray-700">Recommended Dosage</h3>
+      <p id="dosage-output" class="text-blue-600 text-2xl font-bold mt-2">-- mcg</p>
+    </div>
+
+    <!-- Calculate Button -->
+    <button id="calculate-btn" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
+      Calculate Dosage
+    </button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
